@@ -29,8 +29,8 @@ func binary_score(n):
 	var b = dec2bin(n)
 	var digits = str(b)
 	var score = 0
-	for i in digits:
-		if i == "0":
+	for i in len(digits):
+		if digits[i] == "1":
 			score += 1
 		else:
 			score -= 1

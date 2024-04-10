@@ -24,6 +24,7 @@ func generate_height(pos, center_pos):
 	var value = 0
 	if terrain_type == TerrainType.BINARY_MOUNTAINS:
 		value = (model2(pos) * triangles(pos))
+		# value = model2(pos)
 	elif terrain_type == TerrainType.TRIANGLES:
 		value = triangles(pos)
 	elif terrain_type == TerrainType.NOISE:
