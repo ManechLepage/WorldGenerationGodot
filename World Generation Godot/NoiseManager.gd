@@ -1,6 +1,6 @@
 @tool
 extends Node
-var noise:FastNoiseLite
+var noises = []
 @onready var height_manager = %HeightManager
 
 @export var update:bool
@@ -8,17 +8,20 @@ var noise:FastNoiseLite
 @export_category("Noise Settings")
 @export var frequency = 0.1
 @export var scale = 5
+@export var layer_number = 3
 
 func _ready():
 	load_noise()
 
 func load_noise():
-	noise = FastNoiseLite.new()
-	noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	noise.frequency = frequency
+	for i in layer_number:
+		var noise = FastNoiseLite.new()
+		noise.noise_type = FastNoiseLite.TYPE_PERLIN
+		noise.frequency = frequency
+		noises.append(noise)
 
 func get_height_from_noise(pos):
-	return noise.get_noise_2d(pos.x, pos.y)
+	return noises[0].get_noise_2d(pos.x, pos.y)
 
 func _process(delta):
 	if update:
