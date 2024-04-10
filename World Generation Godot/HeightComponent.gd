@@ -3,6 +3,7 @@ extends Node
 
 @onready var functions = %FunctionManager
 @onready var mesh_instance_3d = %MeshInstance3D
+@onready var noise_manager = %NoiseManager
 
 enum TerrainType 
 {
@@ -26,7 +27,7 @@ func generate_height(pos, center_pos):
 	elif terrain_type == TerrainType.TRIANGLES:
 		value = triangles(pos)
 	elif terrain_type == TerrainType.NOISE:
-		value = 1
+		value = generate_noise(pos)
 	if radial:
 		return value * (radial_map(pos, center_pos) * 2)
 	return value
@@ -38,6 +39,9 @@ func radial_map(pos, center_pos):
 	var normalized_distance = 1.0 - (distance / max_distance)
 
 	return clamp(normalized_distance, 0.0, 1.0)
+
+func generate_noise(pos):
+	return noise_manager.get_height_from_noise(pos) * 5
 
 func test(pos):
 	return sin(pos.x) * cos(pos.y)
