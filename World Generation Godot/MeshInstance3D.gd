@@ -19,7 +19,7 @@ func generate_terrain():
 	
 	for z in size + 1:
 		for x in size + 1:
-			var y = height_manager.generate_height(Vector2(x, z))
+			var y = height_manager.generate_height(Vector2(x, z), Vector2(size / 2, size / 2))
 			
 			surftool.add_vertex(Vector3(x, y, z))
 			draw_sphere(Vector3(x, y, z))

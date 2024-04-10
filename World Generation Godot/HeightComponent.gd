@@ -2,9 +2,42 @@
 extends Node
 
 @onready var functions = %FunctionManager
+@onready var mesh_instance_3d = %MeshInstance3D
 
-func generate_height(pos):
-	return model2(pos)
+enum TerrainType 
+{
+	NOISE,
+	BINARY_MOUNTAINS,
+	TRIANGLES
+}
+@export var terrain_type:TerrainType
+@export var radial:bool
+@export var update:bool
+
+func _process(delta):
+	if update:
+		update = false
+		mesh_instance_3d.update = true
+
+func generate_height(pos, center_pos):
+	var value = 0
+	if terrain_type == TerrainType.BINARY_MOUNTAINS:
+		value = (model2(pos) * triangles(pos))
+	elif terrain_type == TerrainType.TRIANGLES:
+		value = triangles(pos)
+	elif terrain_type == TerrainType.NOISE:
+		value = 1
+	if radial:
+		return value * (radial_map(pos, center_pos) * 2)
+	return value
+
+func radial_map(pos, center_pos):
+	var distance = pos.distance_to(center_pos)
+	var max_distance = center_pos.distance_to(Vector2.ZERO)
+
+	var normalized_distance = 1.0 - (distance / max_distance)
+
+	return clamp(normalized_distance, 0.0, 1.0)
 
 func test(pos):
 	return sin(pos.x) * cos(pos.y)
@@ -19,6 +52,7 @@ func triangles(pos):
 	return difference
 
 func model2(pos):
-	var x = functions.factorial(functions.get_total(pos.x))
-	var y = functions.factorial(functions.get_total(pos.y))
-	return x / y
+	var a = functions.binary_score(pos.x)
+	var b = functions.binary_score(pos.y)
+	var c = sqrt(abs(a * b))
+	return c
