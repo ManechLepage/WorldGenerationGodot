@@ -42,7 +42,7 @@ func radial_map(pos, center_pos):
 	return clamp(normalized_distance, 0.0, 1.0)
 
 func generate_noise(pos):
-	return noise_manager.get_height_from_noise(pos) * 5
+	return noise_manager.get_height_from_noise(pos)
 
 func test(pos):
 	return sin(pos.x) * cos(pos.y)

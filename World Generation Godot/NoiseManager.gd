@@ -21,7 +21,10 @@ func load_noise():
 		noises.append(noise)
 
 func get_height_from_noise(pos):
-	return noises[0].get_noise_2d(pos.x, pos.y)
+	var value = 0
+	for i in layer_number:
+		value += noises[i].get_noise_2d(pos.x, pos.y) * (scale * 1/(i + 1)) 
+	return value
 
 func _process(delta):
 	if update:
